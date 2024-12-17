@@ -10,10 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -21,25 +23,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backend.ReactBackendAppApplication;
 import com.backend.dto.CustomerDTO;
+import com.backend.dto.CustomerPageRequestDTO;
 import com.backend.dto.CustomerProjectionDTO;
 import com.backend.dto.UserLoanDTO;
 import com.backend.exception.CommonExceptions;
 import com.backend.exception.ExceptionMessages;
+import com.backend.service.CustomerPageableService;
 import com.backend.service.CustomerServiceImpl;
+
+import jakarta.validation.Valid;
+
 
 
 @RestController
 @EnableCaching
 @RequestMapping("/customer")
 public class CustomerController {
-    	  public static final Log logger = LogFactory.getLog(ReactBackendAppApplication.class);
+    	  public static final Log logger = LogFactory.getLog(CustomerController.class);
 
     // Parameterized logger using SLF4J
-    public static final Logger paramLogger = LoggerFactory.getLogger(ReactBackendAppApplication.class);
+    public static final Logger  paramLogger = LoggerFactory.getLogger( CustomerController.class);
     @Autowired
     CustomerServiceImpl customerService;
+
+	@Autowired
+	CustomerPageableService customerPageableService;
 
     @GetMapping("/allCustomerRecords")
     public List<CustomerDTO> getAllCustomerRecords() throws CommonExceptions {
@@ -160,8 +169,21 @@ public ResponseEntity<Object> insertCustomers(@RequestBody CustomerDTO customers
             return ResponseEntity.status(400).body(response);
         }
     }
-    
 
+	@GetMapping("/customerPages")
+	//	The @ModelAttribute annotation is commonly used to bind form data (from HTTP request parameters) to a model object automatically.
+    public ResponseEntity<Object> getCustomerPages(@Valid @ModelAttribute CustomerPageRequestDTO request) throws CommonExceptions {
+		int page = request.getPage();
+		int size = request.getSize();
+		String planId = request.getPlanId();
+        Page<CustomerProjectionDTO> customerPage = customerPageableService.filterByPlanIdPages(planId, page, size);
+
+        if (!customerPage.isEmpty()) {
+            return ResponseEntity.ok(customerPage);
+        } else {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No data found for the given parameters.");
+        }
+    }
 
 	public List<UserLoanDTO> getUserLoans() throws CommonExceptions {
 		try {
@@ -242,22 +264,6 @@ public ResponseEntity<Object> insertCustomers(@RequestBody CustomerDTO customers
 		logger.error(ExceptionMessages.FAIL_MESSAGE);
 		throw new CommonExceptions(ExceptionMessages.FAIL_MESSAGE, e);
 	}
-	}
-	public void customerPageable() throws CommonExceptions {
-		try {
-			// Call the service method
-			Page<CustomerProjectionDTO> customerPage = customerPageableService.filterByPlanIdPages("1", 0, 3);
-			// Log the total number of elements and details
-			paramLogger.info("\n\nTotal number of elements: {}", customerPage.getTotalElements());
-		} catch (CommonExceptions e) {
-			// Log the specific exception
-			paramLogger.error("Error occurred while fetching paginated customers: {}", e.getMessage(), e);
-			throw e; // Rethrow the same exception
-		} catch (Exception e) {
-			// Handle any other unexpected exceptions
-			paramLogger.error(ExceptionMessages.FAIL_MESSAGE, e);
-			throw new CommonExceptions(ExceptionMessages.FAIL_MESSAGE, e);
-		}
 	}
 
 

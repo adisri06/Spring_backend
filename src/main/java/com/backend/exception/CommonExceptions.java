@@ -8,5 +8,9 @@ public class CommonExceptions extends Exception{
     public CommonExceptions(String message) {
         super(message);
     }
+
+    public CommonExceptions(String message, Throwable cause) {
+        super(message, cause);
+    }
     
 }
