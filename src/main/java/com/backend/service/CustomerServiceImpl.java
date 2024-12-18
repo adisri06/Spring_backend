@@ -213,10 +213,10 @@ public void deleteCustomer(long phoneNumber) throws CommonExceptions {
 
         }
         @Override
-        public List<CustomerDTO> filterbyNameLike() throws CommonExceptions{   
+        public List<CustomerDTO> filterbyNameLike(String name) throws CommonExceptions{   
             List<CustomerDTO> customerDTOList = new ArrayList<CustomerDTO>();
                  try{
-                    List<Customer> customerList = customerRepo.findByNameLike("Rohan");
+                    List<Customer> customerList = customerRepo.findByNameLike(name);
                     logger.info("Customer filtered successfully");
                     for(Customer customer : customerList) {
                         customerDTOList.add(Customer.prepareCustomerDTO(customer));

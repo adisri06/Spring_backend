@@ -3,6 +3,7 @@ package com.backend.Controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -84,7 +85,27 @@ public class CustomerController {
             throw new CommonExceptions(ExceptionMessages.FAIL_MESSAGE, e);
         }
     }
+    @GetMapping("/customerName/{name}")
+    public ResponseEntity<Object>getCustomer(@PathVariable String name) throws CommonExceptions {
+        try {
+            logger.info("Fetching customer with name: " + name);
+             List<CustomerDTO> customer = customerService.filterbyNameLike(name);
 
+            if (customer == null|| customer.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.OK)
+                                 .body(Map.of("message", "No customer found"));
+
+            } else {
+                logger.info(ExceptionMessages.CUSTOMER_FOUND);
+
+            // Return 200 with customer data
+            return ResponseEntity.status(HttpStatus.FOUND).body(customer);
+            }
+        } catch (Exception e) {
+            logger.error(ExceptionMessages.FAIL_MESSAGE, e);
+            throw new CommonExceptions(ExceptionMessages.FAIL_MESSAGE, e);
+        }
+    }
     @PostMapping("/insertCustomers")
 public ResponseEntity<Object> insertCustomers(@RequestBody CustomerDTO customers) {
     try {

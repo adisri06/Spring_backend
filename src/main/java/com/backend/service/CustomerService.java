@@ -19,7 +19,7 @@ public interface CustomerService{
     public List<CustomerDTO> filterbyage() throws CommonExceptions;
     public List<CustomerDTO> filterbygender() throws CommonExceptions;
     public List<CustomerDTO> filterbyAddressNull() throws CommonExceptions;
-    public List<CustomerDTO> filterbyNameLike() throws CommonExceptions;
+    public List<CustomerDTO> filterbyNameLike(String name) throws CommonExceptions;
     public List<CustomerDTO> filterbyAgeOrderByPlanIdDesc() throws CommonExceptions;
 
     public List<CustomerDTO> filterbyAgeRangeAndGender() throws CommonExceptions;
