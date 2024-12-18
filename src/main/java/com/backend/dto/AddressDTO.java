@@ -1,21 +1,12 @@
-package com.backend.domain;
+package com.backend.dto;
 
-import com.backend.dto.AddressDTO;
+import com.backend.domain.Address;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
-@Entity
-public class Address {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class AddressDTO {
     private Long addressId;
-
     private String street;
     private String city;
+
     // Getters and Setters
     public Long getAddressId() {
         return addressId;
@@ -25,11 +16,11 @@ public class Address {
         this.addressId = addressId;
     }
 
-    public String getStreet() {
+    public String getStreet() {  // Fixed getter naming
         return street;
     }
 
-    public void setStreet(String street) {
+    public void setStreet(String street) {  // Fixed setter naming
         this.street = street;
     }
 
@@ -41,21 +32,22 @@ public class Address {
         this.city = city;
     }
 
-  
-
     @Override
     public String toString() {
-        return "Address{" +
+        return "AddressDTO{" +
                 "addressId=" + addressId +
                 ", street='" + street + '\'' +
                 ", city='" + city + '\'' +
                 '}';
     }
-    public AddressDTO convertToAddressDTO() {
-        AddressDTO addressDTO = new AddressDTO();
-        addressDTO.setAddressId(this.addressId);
-        addressDTO.setCity(this.city);
-        addressDTO.setStreet(this.street);
-        return addressDTO;
+
+    public static Address convertToAddress(AddressDTO addressDTO) {
+        if (addressDTO == null) return null; // Null safety check
+
+        Address address = new Address();
+        address.setAddressId(addressDTO.getAddressId());
+        address.setStreet(addressDTO.getStreet());
+        address.setCity(addressDTO.getCity());
+        return address;
     }
 }

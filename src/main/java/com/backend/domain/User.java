@@ -1,4 +1,7 @@
 package com.backend.domain;
+
+import com.backend.dto.UserDTO;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,22 +12,25 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "app_user") 
+@Table(name = "app_user")
 public class User {
     @Id
-     @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userid;
+
     private String name;
     private String email;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "addressId")
     private Address address;
-    
-    public Long getUser_id() {
+
+    // Getters and Setters
+    public Long getUserid() {  // Updated getter name
         return userid;
     }
 
-    public void setUser_id(Long userid) {
+    public void setUserid(Long userid) {  // Updated setter name
         this.userid = userid;
     }
 
@@ -54,8 +60,20 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [userid=" + userid + ", name=" + name + ", email=" + email + ", address=" + address + "]";
+        return "User{" +
+                "userid=" + userid +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", address=" + address +
+                '}';
     }
-    
-    
+    public UserDTO convertToUserDTO(User user) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUserId(user.getUserid());
+        userDTO.setName(user.getName());
+        userDTO.setEmail(user.getEmail());
+        // Ensure convertToAddressDTO is defined in Address
+        userDTO.setAddress(user.getAddress() != null ? user.getAddress().convertToAddressDTO() : null);
+        return userDTO;
+    }
 }
