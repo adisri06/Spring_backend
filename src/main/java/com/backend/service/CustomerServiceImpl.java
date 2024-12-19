@@ -285,5 +285,15 @@ public void deleteCustomer(long phoneNumber) throws CommonExceptions {
 
         }
 
+    @Override
+    public List<CustomerProjectionDTO> filterByNameandNumber() throws CommonExceptions {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Page<CustomerProjectionDTO> filterByPlanIdPages(String planId, int page, int size) throws CommonExceptions {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 
 }

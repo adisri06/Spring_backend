@@ -1,5 +1,6 @@
 package com.backend.config;
 
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,7 +16,15 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 @Configuration
+@SecurityScheme(
+    name = "basicAuth",
+    type = SecuritySchemeType.HTTP,
+    scheme = "basic"
+)
 public class SecurityConfig {
 
 //By making it a bean, Spring can manage the lifecycle of the SecurityFilterChain, ensuring it is properly initialized and available when handling requests.
@@ -29,6 +38,7 @@ public class SecurityConfig {
         .requestMatchers(HttpMethod.PATCH, "/**").authenticated()
         .requestMatchers(HttpMethod.POST, "/**").authenticated()
         .requestMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
+        .requestMatchers("/swagger-ui/**", "/v3/api-docs").permitAll()  
         .anyRequest().permitAll() 
     )
             .httpBasic(withDefaults())  
@@ -82,6 +92,15 @@ public CorsConfigurationSource corsConfigurationSource() {
 
     return source;
 }
+@Bean
+    public GroupedOpenApi publicApi() {
+        return GroupedOpenApi.builder()
+            .group("public-api")
+            .pathsToMatch("/customer/**") 
+            // .securitySchemes(List.of(new SecurityScheme().name("basicAuth")
+            //         .type(SecuritySchemeType.HTTP).scheme("basic")))
+            .build();
+    }
 
 
 

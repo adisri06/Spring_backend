@@ -1,14 +1,22 @@
 package com.backend.dto;
-
 import com.backend.domain.Customer;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+@Schema(description = "Data transfer object representing customer details")
 public class CustomerDTO {
-
+    @Schema(description = "Phone number of the customer", example = "9876543210", required = true)
     private Long phoneNumber;
+    @Schema(description = "Name of the customer", example = "John Doe", required = true)
     private String name;
+
+    @Schema(description = "Age of the customer", example = "30", required = true)
     private Integer age;
+
+    @Schema(description = "Gender of the customer", example = "M", required = true)
     private Character gender;
+    @Schema(description = "Address of the customer", example = "123 Main Street, City", required = true)
     private String address;
+    @Schema(description = "Plan ID associated with the customer", example = "PLAN123", required = true)
     private String planId;
 
 

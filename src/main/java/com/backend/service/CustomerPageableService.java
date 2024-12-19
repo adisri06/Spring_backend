@@ -6,20 +6,22 @@ import java.util.stream.Collectors;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.slf4j.Logger;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.ReactBackendAppApplication;
+import com.backend.dto.CustomerDTO;
 import com.backend.dto.CustomerProjectionDTO;
+import com.backend.dto.UserLoanDTO;
 import com.backend.exception.CommonExceptions;
 import com.backend.exception.ExceptionMessages;
 import com.backend.repository.CustomerPageableRepository;
@@ -131,5 +133,80 @@ public class CustomerPageableService implements CustomerService {
             return null;
         }
         return cache.get(cacheKey, Page.class);  // Returns the cached page or null if not found
+    }
+
+    @Override
+    public CustomerDTO getCustomer(Long phoneNumber) throws CommonExceptions {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void insertCustomer(CustomerDTO customerDTO) throws CommonExceptions {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<CustomerDTO> getAllCustomers() throws CommonExceptions {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public CustomerDTO updateCustomer(long phoneNumber, String name) throws CommonExceptions {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void deleteCustomer(long phoneNumber) throws CommonExceptions {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<CustomerDTO> filterbyageandgender() throws CommonExceptions {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<CustomerDTO> filterbyage() throws CommonExceptions {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<CustomerDTO> filterbygender() throws CommonExceptions {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<CustomerDTO> filterbyAddressNull() throws CommonExceptions {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<CustomerDTO> filterbyNameLike(String name) throws CommonExceptions {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<CustomerDTO> filterbyAgeOrderByPlanIdDesc() throws CommonExceptions {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<CustomerDTO> filterbyAgeRangeAndGender() throws CommonExceptions {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<CustomerProjectionDTO> filterByNameandNumber() throws CommonExceptions {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<CustomerProjectionDTO> filterbyPlanId() throws CommonExceptions {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<UserLoanDTO> getUserLoanDetails() throws CommonExceptions {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
